@@ -1,6 +1,7 @@
 * {
     --light-blue: #4d5bb5;
     --purple: #24165e;
+    --gray: #353d4e
 }
 
 main {
@@ -14,6 +15,25 @@ aside {
 
 h2 {
     font-weight: bold;
+}
+
+h3 {
+    font-size: 130%;
+    font-weight: bold;
+}
+
+ul {
+    list-style-type: none;
+    line-height: 2rem;
+    padding-left: 0;
+}
+
+section {
+    width: 70%;
+}
+
+#today {
+    border: 1px solid black;
 }
 
 .bold {
@@ -33,3 +53,11 @@ h2 {
 .line {
     border-bottom: 1px solid gray;
 }
+
+.card {
+    margin-right: 1rem;
+    border-radius: 0;
+    color: white;
+    background-color: var(--gray);
+}
+
