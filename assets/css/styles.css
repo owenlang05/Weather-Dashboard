@@ -1,0 +1,35 @@
+* {
+    --light-blue: #4d5bb5;
+    --purple: #24165e;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+aside {
+    width: 20%;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+.bold {
+    font-size: 64pt;
+    font-weight:700;
+}
+
+.background {
+    background-image: linear-gradient(to right, var(--light-blue) , var(--purple));
+}
+
+.btn {
+    background-color: var(--light-blue);
+
+}
+
+.line {
+    border-bottom: 1px solid gray;
+}
