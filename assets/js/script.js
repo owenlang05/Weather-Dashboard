@@ -10,7 +10,8 @@ var forecastDates = $('#5forecast').children().children('h3');
 var forecastList = $('#5forecast').children().children('ul').children();
 var forecastImages = $('#5forecast').children().children('img')
 var today = dayjs().format('M/D/YYYY')
-
+var lat;
+var long;
 
 function loadDates() {
   city.text(`(${today})`)
@@ -22,8 +23,6 @@ function loadDates() {
     header.text(dayjs().date(day+i).format('M/D/YYYY'))
   }
 }
-
-
 
 
 
@@ -46,13 +45,13 @@ function searchCities(evt) {
 
       return response.json();
     }).then(function (location) {
-        var lat = location[0].lat;
-        var long = location[0].lon;
+        lat = location[0].lat;
+        long = location[0].lon;
 
         city.text(location[0].name + ` (${today})`);
 
-        var weatherURL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${apiKey}&units=imperial`
-      fetch(weatherURL)
+        var forecastURL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${apiKey}&units=imperial`
+      fetch(forecastURL)
       .then(function (response) {
         if (!response.ok) {
           throw response.json();
@@ -60,7 +59,7 @@ function searchCities(evt) {
 
         return response.json();
       }).then(function (weather) {
-        console.log(weather)
+
         for (var i = 0; i < 5; i++){
           var j = i * 8
           var img = $(forecastImages[i])
@@ -72,8 +71,35 @@ function searchCities(evt) {
           forecastList[i * 3].innerHTML = 'Temp: ' + weather.list[j].main.temp + ' °F';
           forecastList[i * 3 + 1].innerHTML = 'Wind: ' + weather.list[j].wind.speed + 'MPH';
           forecastList[i * 3 + 2].innerHTML = 'Humidity: ' + weather.list[j].main.humidity + '%';
+
         }
+        var currentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=imperial`;
+        fetch(currentWeatherURL)
+        .then(function (response) {
+          if (!response.ok){
+            throw response.json();
+          }
+          return response.json()
+        }).then(function (weather) {
+          console.log(weather)
+          var img = $('#currentImg')
+          var list = $('#currentList').children()
+          
+          var imageUrl = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`
+          img.attr('src', imageUrl)
+          img.css('display', 'inline');
+          console.log(list)
+          list[0].innerHTML = 'Temp: ' + weather.main.temp + ' °F';
+          list[1].innerHTML = 'Wind: ' + weather.wind.speed + ' MPH';
+          list[2].innerHTML = 'Humidity: ' + weather.main.humidity + '%';
+        })
+        .catch(function (error){
+          console.error(error);
+        })  
       })
+      .catch(function (error){
+        console.error(error)
+      });
     })
     .catch(function (error) {
         console.error(error);
