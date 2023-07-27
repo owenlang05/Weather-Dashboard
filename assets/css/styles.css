@@ -51,7 +51,7 @@ img {
     background-image: linear-gradient(to right, var(--light-blue) , var(--purple));
 }
 
-.btn {
+.btn-primary {
     background-color: var(--light-blue);
 
 }
@@ -67,7 +67,3 @@ img {
     background-color: var(--gray);
 }
 
-.btn-saved {
-    color: black;
-    background-color: #aeaeae;
-}
