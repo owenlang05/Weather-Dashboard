@@ -24,7 +24,21 @@ function loadDates() {
   }
 }
 
+function loadButtons() {
+  var savedCities = localStorage.getItem('cities') || '[]';
+  searchedCities = [...JSON.parse(savedCities)];
 
+  pastCities.children().remove()
+
+  var buttonTemplate = $(`<button class="btn btn-secondary btn-saved mb-3" type="button"></button>`)
+  for (var i = 0; i < searchedCities.length; i++){
+    var button = buttonTemplate.clone()
+    button.attr('id', searchedCities[i])
+    button.text(searchedCities[i])
+    pastCities.append(button)
+  }
+  
+}
 
 function searchCities(evt) {
     evt.preventDefault();
@@ -50,6 +64,15 @@ function searchCities(evt) {
 
         city.text(location[0].name + ` (${today})`);
 
+        var savedCities = localStorage.getItem('cities') || '[]';
+        searchedCities = [...JSON.parse(savedCities)]
+        if (!searchedCities.includes(location[0].name)) {
+          searchedCities.push(location[0].name);
+          localStorage.setItem('cities', JSON.stringify(searchedCities))
+        }
+        
+        console.log(searchedCities);
+
         var forecastURL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${apiKey}&units=imperial`
       fetch(forecastURL)
       .then(function (response) {
@@ -67,7 +90,7 @@ function searchCities(evt) {
 
           img.attr('src', imageUrl);
           img.css('display', 'block')
-          console.log(forecastList)
+    
           forecastList[i * 3].innerHTML = 'Temp: ' + weather.list[j].main.temp + ' °F';
           forecastList[i * 3 + 1].innerHTML = 'Wind: ' + weather.list[j].wind.speed + 'MPH';
           forecastList[i * 3 + 2].innerHTML = 'Humidity: ' + weather.list[j].main.humidity + '%';
@@ -81,17 +104,17 @@ function searchCities(evt) {
           }
           return response.json()
         }).then(function (weather) {
-          console.log(weather)
           var img = $('#currentImg')
           var list = $('#currentList').children()
           
           var imageUrl = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`
           img.attr('src', imageUrl)
           img.css('display', 'inline');
-          console.log(list)
           list[0].innerHTML = 'Temp: ' + weather.main.temp + ' °F';
           list[1].innerHTML = 'Wind: ' + weather.wind.speed + ' MPH';
           list[2].innerHTML = 'Humidity: ' + weather.main.humidity + '%';
+          
+          loadButtons()
         })
         .catch(function (error){
           console.error(error);
@@ -106,5 +129,13 @@ function searchCities(evt) {
     });
 }
 
+function pastButtons(evt) {
+  searchBox.val(evt.target.id)
+  searchCities(evt)
+}
+
 loadDates();
+loadButtons();
+
 searchBtn.on('click', searchCities);
+pastCities.on('click', '.btn-saved', pastButtons);

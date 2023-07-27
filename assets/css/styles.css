@@ -67,3 +67,7 @@ img {
     background-color: var(--gray);
 }
 
+.btn-saved {
+    color: black;
+    background-color: #aeaeae;
+}
