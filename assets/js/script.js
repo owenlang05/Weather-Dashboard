@@ -70,8 +70,7 @@ function searchCities(evt) {
           searchedCities.push(location[0].name);
           localStorage.setItem('cities', JSON.stringify(searchedCities))
         }
-        
-        console.log(searchedCities);
+      
 
         var forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${apiKey}&units=imperial`
       fetch(forecastURL)
