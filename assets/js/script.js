@@ -49,7 +49,7 @@ function searchCities(evt) {
         return;
     }
     
-    var geocoderURL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityInput}&limit=1&appid=${apiKey}`
+    var geocoderURL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityInput}&limit=1&appid=${apiKey}`
 
     fetch(geocoderURL)
     .then(function (response) {
@@ -73,7 +73,7 @@ function searchCities(evt) {
         
         console.log(searchedCities);
 
-        var forecastURL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${apiKey}&units=imperial`
+        var forecastURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${apiKey}&units=imperial`
       fetch(forecastURL)
       .then(function (response) {
         if (!response.ok) {
